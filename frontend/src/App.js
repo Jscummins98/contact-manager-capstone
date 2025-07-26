@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ContactList from './components/ContactList';
 import ContactForm from './components/ContactForm';
 import SearchBar from './components/SearchBar';
+import './index.css';
 
 function App() {
   // Variables to store the Contact List, the contact being edited, and the search query
