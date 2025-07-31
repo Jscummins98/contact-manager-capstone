@@ -1,50 +1,60 @@
-import React, { useState } from 'react';
-import ContactList from './components/ContactList';
+import React, { useEffect, useState } from 'react';
 import ContactForm from './components/ContactForm';
+import ContactList from './components/ContactList';
 import SearchBar from './components/SearchBar';
 import './index.css';
 
 function App() {
-  // Variables to store the Contact List, the contact being edited, and the search query
   const [contacts, setContacts] = useState([]);
   const [editingContact, setEditingContact] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Add or update a contact
+  // Get contacts from backend when app loads
+  useEffect(() => {
+    fetch('http://localhost:5000/api/contacts')
+      .then(res => res.json())
+      .then(data => setContacts(data))
+      .catch(err => console.error('Error loading contacts:', err));
+  }, []);
+
+  // Add or update contact
   const handleSave = (contact) => {
-    // Cancel editing
-    if (contact === null) {
-      setEditingContact(null);
-      return;
+    if (contact._id) {
+      // UPDATE contact with PUT method
+      fetch(`http://localhost:5000/api/contacts/${contact._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contact)
+      })
+        .then(res => res.json())
+        .then(updated => {
+          setContacts(prev =>
+            prev.map(c => (c._id === updated._id ? updated : c))
+          );
+          setEditingContact(null);
+        });
+    } else {
+      // ADD new contact with POST method
+      fetch('http://localhost:5000/api/contacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contact)
+      })
+        .then(res => res.json())
+        .then(newContact => {
+          setContacts(prev => [...prev, newContact]);
+        });
     }
-
-    // Update existing contact
-    if (contact.id) {
-      setContacts((prev) =>
-        prev.map((c) =>
-          c.id === contact.id ? contact : c
-        )
-      );
-    } 
-    
-    // Add new contact with unique ID
-    else {
-      contact.id = Date.now();
-      setContacts((prev) => [...prev, contact]);
-    }
-
-    // Clear the input form after updating contact
-    setEditingContact(null);
   };
 
-  // Delete a contact
+  // Delete a contact with DELETE method
   const handleDelete = (id) => {
-    setContacts((prev) => prev.filter((c) => c.id !== id));
-  };
-
-  // Start editing a contact
-  const handleEdit = (contact) => {
-    setEditingContact(contact);
+    fetch(`http://localhost:5000/api/contacts/${id}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        setContacts(prev => prev.filter(c => c._id !== id));
+      });
   };
 
   // Filter contacts based on search
@@ -54,19 +64,19 @@ function App() {
   );
 
   return (
-    <div className="App">
+    <div className="container">
       <h1>Contact Manager</h1>
 
       <SearchBar onSearch={setSearchQuery} />
 
-      <ContactForm
-        onSave={handleSave}
-        editingContact={editingContact}
+      <ContactForm 
+        onSave={handleSave} 
+        editingContact={editingContact} 
       />
 
       <ContactList
         contacts={filteredContacts}
-        onEdit={handleEdit}
+        onEdit={setEditingContact}
         onDelete={handleDelete}
       />
     </div>

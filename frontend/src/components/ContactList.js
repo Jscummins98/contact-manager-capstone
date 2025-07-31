@@ -9,16 +9,16 @@ function ContactList({ contacts, onEdit, onDelete }) {
       ) : (
         <ul>
           {contacts.map((contact) => (
-            <li key={contact.id}>
-              <div>
-                <strong>{contact.firstName} {contact.lastName}</strong>
-                <p>{contact.phone}</p>
+              <div className='contact-item' key={contact.id}>
+                <div className='contact-info'>
+                  <strong>{contact.firstName} {contact.lastName}</strong>
+                  <p>{contact.phone}</p>
+                </div>
+                <div className="contact-actions">
+                  <button className='edit-btn' onClick={() => onEdit(contact)}>Edit</button>
+                  <button className='delete-btn' onClick={() => onDelete(contact._id)}>Delete</button>
+                </div>
               </div>
-              <div className="btn-group">
-                <button onClick={() => onEdit(contact)}>Edit</button>
-                <button onClick={() => onDelete(contact.id)}>Delete</button>
-              </div>
-            </li>
           ))}
         </ul>
       )}
