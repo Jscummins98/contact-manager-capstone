@@ -9,9 +9,11 @@ function App() {
   const [editingContact, setEditingContact] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+// Replaced localhost:5000 with https://contact-manager-capstone-2.onrender.com to connect to live backend on render
+
   // Get contacts from backend when app loads
   useEffect(() => {
-    fetch('http://localhost:5000/api/contacts')
+    fetch('http://https://contact-manager-capstone-2.onrender.com/api/contacts')
       .then(res => res.json())
       .then(data => setContacts(data))
       .catch(err => console.error('Error loading contacts:', err));
@@ -21,7 +23,7 @@ function App() {
   const handleSave = (contact) => {
     if (contact._id) {
       // UPDATE contact with PUT method
-      fetch(`http://localhost:5000/api/contacts/${contact._id}`, {
+      fetch(`http://https://contact-manager-capstone-2.onrender.com/api/contacts/${contact._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(contact)
@@ -35,7 +37,7 @@ function App() {
         });
     } else {
       // ADD new contact with POST method
-      fetch('http://localhost:5000/api/contacts', {
+      fetch('http://https://contact-manager-capstone-2.onrender.com/api/contacts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(contact)
@@ -49,7 +51,7 @@ function App() {
 
   // Delete a contact with DELETE method
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/contacts/${id}`, {
+    fetch(`http://https://contact-manager-capstone-2.onrender.com/api/contacts/${id}`, {
       method: 'DELETE'
     })
       .then(() => {
