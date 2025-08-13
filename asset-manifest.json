@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/contact-manager-capstone/static/css/main.b0c2118d.css",
-    "main.js": "/contact-manager-capstone/static/js/main.8261bdf2.js",
+    "main.js": "/contact-manager-capstone/static/js/main.9597dd01.js",
     "index.html": "/contact-manager-capstone/index.html",
     "main.b0c2118d.css.map": "/contact-manager-capstone/static/css/main.b0c2118d.css.map",
-    "main.8261bdf2.js.map": "/contact-manager-capstone/static/js/main.8261bdf2.js.map"
+    "main.9597dd01.js.map": "/contact-manager-capstone/static/js/main.9597dd01.js.map"
   },
   "entrypoints": [
     "static/css/main.b0c2118d.css",
-    "static/js/main.8261bdf2.js"
+    "static/js/main.9597dd01.js"
   ]
 }
